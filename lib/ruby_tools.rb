@@ -4,6 +4,19 @@ require "ruby_tools/version"
 #   # Your code goes here...
 # end
 
+  # http://ruby-doc.org/core-2.2.0/Binding.html
+  # to zwraca hasha ze wszystkimi zmiennymi lokalnymi i ich wartościami w przekazanym context (przez wywołanie binding);
+  # czyli należy wywoływać przez: AppHelper.local_variables_hash(binding) 
+  def self.local_variables_hash(context)
+    context.eval <<-RUBY, __FILE__, __LINE__
+      (local_variables | [:self]).hmap do |v| 
+        { 
+          v => eval(v.to_s).instance_eval {is_a?(ActiveRecord::Base) ? inspect : to_s}[0..500] 
+        }
+      end
+    RUBY
+  end if false # TODO AppHelper?
+
 
 Object.class_eval do
 
