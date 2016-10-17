@@ -4,6 +4,8 @@ require "ruby_tools/version"
 #   # Your code goes here...
 # end
 
+module Helper
+
   # http://ruby-doc.org/core-2.2.0/Binding.html
   # to zwraca hasha ze wszystkimi zmiennymi lokalnymi i ich wartościami w przekazanym context (przez wywołanie binding);
   # czyli należy wywoływać przez: AppHelper.local_variables_hash(binding) 
@@ -16,6 +18,34 @@ require "ruby_tools/version"
       end
     RUBY
   end if false # TODO AppHelper?
+
+  # TODO - zamienic key na path = [] ?
+  def self.traverse(object, key = nil)
+    case object
+      when Hash
+        object.each {|k, v| traverse(v, "#{key}.#{k}", &Proc.new) }
+      when Array
+        object.each_with_index {|el, index| traverse(el, "#{key}[#{index}]", &Proc.new) }
+      else
+        yield object, key
+    end
+
+    object
+  end
+
+  # TODO - zamienic key na path = [] ?
+  def self.map_traverse(object, key = nil)
+    case object
+      when Hash
+        object.hmap {|k, v| {k => map_traverse(v, "#{key}.#{k}", &Proc.new)} }
+      when Array
+        object.each_with_index.map {|el, index| map_traverse(el, "#{key}[#{index}]", &Proc.new) }
+      else
+        yield object, key
+    end
+  end
+
+end
 
 
 Object.class_eval do
