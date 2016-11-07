@@ -45,6 +45,12 @@ module Helper
     end
   end
 
+  # caching proc
+  def self.rounding_hash(precision = 2)
+    # TODO - round price
+    Hash.new {|this, key| this[key] = self.round_price(key, precision) }
+  end
+
 end
 
 
