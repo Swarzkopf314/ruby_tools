@@ -34,12 +34,12 @@ module Helper
   end
 
   # TODO - zamienic key na path = [] ?
-  def self.map_traverse(object, key = nil)
+  def self.map_traverse(object, key = nil, transform_hash_key = nil)
     case object
       when Hash
-        object.hmap {|k, v| {k => map_traverse(v, "#{key}.#{k}", &Proc.new)} }
+        object.hmap {|k, v| {(transform_hash_key.nil? ? k : transform_hash_key[k]) => map_traverse(v, "#{key}.#{k}", transform_hash_key, &Proc.new)} }
       when Array
-        object.each_with_index.map {|el, index| map_traverse(el, "#{key}[#{index}]", &Proc.new) }
+        object.each_with_index.map {|el, index| map_traverse(el, "#{key}[#{index}]", transform_hash_key, &Proc.new) }
       else
         yield object, key
     end
