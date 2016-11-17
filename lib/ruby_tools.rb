@@ -120,7 +120,7 @@ module HashExtensions
 
   def compose
     each_with_object({}) do |(k, v), acc|
-      acc[k] = yield(v)
+      acc[k] = yield(v, k)
       acc
     end
     # hmap {|k,v| {k => yield(v)}} # unikamy zaleznosci od hmap
@@ -128,7 +128,7 @@ module HashExtensions
 
   def compose!
     each do |k,v|
-      self[k] = yield(v)
+      self[k] = yield(v, k)
     end
   end
 
