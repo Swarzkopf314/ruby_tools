@@ -49,30 +49,32 @@ module AdditionalFieldable
       _additional_fields_types.keys
     end
 
-    # TODO - tu powinnismy includowac anonimowy modul do klasy, zamiast definiowac metody - wtedy mozna je overridowac
     def additional_field(name, type, serializable: false, read_only: false)
       raise "zly typ pola: #{type}! dopuszczalne to: #{ACCEPTABLE_FIELDS_TYPES}" unless type.in?(ACCEPTABLE_FIELDS_TYPES)
       raise "serializable dopuszczalne tylko dla typow string i text" if serializable && !type.in?(%i(string text))
 
       _additional_fields_types[name] = type
 
-      define_method("additional_field_#{name}") do
-        _additional_field(name)
-      end
-
-      define_method(name) do
-        value = _additional_field(name).try(type)
-        value = YAML.load(value) if serializable && value
-        value
-      end
-
-      unless read_only
-        define_method("#{name}=") do |value|
-          value = value.presence.try(:to_yaml) if serializable
-          field = send("additional_field_#{name}") || _additional_fields.build(name: name)
-          field.send("#{type}=", value)
+      # dzieki temu mozna overridowac te metody w klasie - i uzywac super
+      include (Module.new do
+        define_method("additional_field_#{name}") do
+          _additional_field(name)
         end
-      end
+
+        define_method(name) do
+          value = _additional_field(name).try(type)
+          value = YAML.load(value) if serializable && value
+          value
+        end
+
+        unless read_only
+          define_method("#{name}=") do |value|
+            value = value.presence.try(:to_yaml) if serializable
+            field = send("additional_field_#{name}") || _additional_fields.build(name: name)
+            field.send("#{type}=", value)
+          end
+        end
+      end)
 
     end 
 
