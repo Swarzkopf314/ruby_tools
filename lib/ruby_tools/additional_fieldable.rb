@@ -49,6 +49,7 @@ module AdditionalFieldable
       _additional_fields_types.keys
     end
 
+    # TODO - tu powinnismy includowac anonimowy modul do klasy, zamiast definiowac metody - wtedy mozna je overridowac
     def additional_field(name, type, serializable: false, read_only: false)
       raise "zly typ pola: #{type}! dopuszczalne to: #{ACCEPTABLE_FIELDS_TYPES}" unless type.in?(ACCEPTABLE_FIELDS_TYPES)
       raise "serializable dopuszczalne tylko dla typow string i text" if serializable && !type.in?(%i(string text))
