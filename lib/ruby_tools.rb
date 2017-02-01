@@ -188,3 +188,11 @@ Proc.class_eval do
   end
 
 end
+
+String.class_eval do
+
+  def is_number?
+    to_i.to_s == self.strip || to_f.to_s == self.strip
+  end
+
+end
