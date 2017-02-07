@@ -50,6 +50,12 @@ module Helper
     # TODO - round price
     Hash.new {|this, key| this[key] = self.round_price(key, precision) }
   end
+  
+  def self.assertion_proc
+    prc = block_given? ? Proc.new : proc {|msg| raise msg} 
+
+    return proc {|cond, msg = "assertion_failed"| prc.call(msg) unless cond}
+  end
 
 end
 
