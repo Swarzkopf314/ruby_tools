@@ -101,11 +101,7 @@ Object.class_eval do
   end
 
   def run_block_if(condition, &block)
-    if condition
-      block.call(self)
-    else
-      self
-    end
+    condition ? yield(self) : self
   end
 
 end
