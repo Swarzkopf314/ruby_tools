@@ -100,6 +100,14 @@ Object.class_eval do
     !!self
   end
 
+  def run_block_if(condition, &block)
+    if condition
+      block.call(self)
+    else
+      self
+    end
+  end
+
 end
 
 
