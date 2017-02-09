@@ -110,8 +110,8 @@ end
 module HashExtensions
 
   def group_by_values
-    group_by {|k, v| v}.compose do |v|
-      v.map(&:first)
+    group_by {|k, v| v}.compose do |list_of_key_value_pairs|
+      list_of_key_value_pairs.map(&:first)
     end
   end
 
