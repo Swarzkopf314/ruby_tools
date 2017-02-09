@@ -100,7 +100,7 @@ Object.class_eval do
     !!self
   end
 
-  def run_block_if(condition, &block)
+  def tap_in_block_if(condition)
     condition ? yield(self) : self
   end
 
