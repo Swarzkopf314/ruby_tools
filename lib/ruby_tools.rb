@@ -202,7 +202,8 @@ end
 String.class_eval do
 
   def is_number?
-    to_i.to_s == self.strip || to_f.to_s == self.strip
+    s = self.strip.sub(',', '.')
+    s.to_i.to_s == s || s.to_f.to_s == s
   end
 
 end
