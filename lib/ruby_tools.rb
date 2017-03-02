@@ -72,13 +72,13 @@ Object.class_eval do
   end
 
   # TODO
-  # def presence_if
-  #   if block_given?
-  #     self if self.present? && yield(self)
-  #   else
-  #     presence
-  #   end
-  # end
+  def presence_if
+    if block_given?
+      self if self.present? && yield(self)
+    else
+      presence
+    end
+  end
 
   def quick_fix(message = nil)
     Rails.logger.debug "\n\nWARNING: quick fix detected in #{get_caller_name}#{message.presence.try {|msq| "\nMESSAGE: #{message}" }}\n\n"
