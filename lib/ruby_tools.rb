@@ -1,5 +1,9 @@
 require "ruby_tools/version"
 
+# ActiveSupport
+require "active_support"
+require "active_support/core_ext"
+
 # module RubyTools
 #   # Your code goes here...
 # end
