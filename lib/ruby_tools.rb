@@ -123,10 +123,10 @@ Class.class_eval do
     prepend(Module.new do
 
       method_names.each do |name|
-        super_method = klass.instance_method(name)
+        decorated = klass.instance_method(name)
 
         define_method(name) do |*args, &block|
-          instance_exec(super_method.bind(self), *args, block, &common_block)
+          instance_exec(decorated.bind(self), *args, block, &common_block)
         end
       end
 
