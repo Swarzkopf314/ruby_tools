@@ -3,6 +3,7 @@ require "ruby_tools/version"
 # ActiveSupport
 require "active_support"
 require "active_support/core_ext"
+# require "active_support/callbacks"
 
 # module RubyTools
 #   # Your code goes here...
@@ -110,6 +111,29 @@ Object.class_eval do
 
 end
 
+Class.class_eval do
+
+  # example usage:
+  # decorate_methods_with_block(*CACHED_METHODS) do |decorated, *args, block|
+  #   @invoice.cached_show.try(:[], decorated.name).presence || decorated.call(*args, &block)
+  # end
+  def decorate_methods_with_block(*method_names, &common_block)
+    klass = self
+
+    prepend(Module.new do
+
+      method_names.each do |name|
+        super_method = klass.instance_method(name)
+
+        define_method(name) do |*args, &block|
+          instance_exec(super_method.bind(self), *args, block, &common_block)
+        end
+      end
+
+    end)
+  end
+
+end
 
 module HashExtensions
 
