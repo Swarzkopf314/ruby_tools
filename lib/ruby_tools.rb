@@ -126,6 +126,7 @@ Class.class_eval do
         decorated = klass.instance_method(name)
 
         define_method(name) do |*args, &block|
+          # decorated = method(__method__).super_method # <- thanks to this it can be called before the methods are defined
           instance_exec(decorated.bind(self), *args, block, &common_block)
         end
       end
