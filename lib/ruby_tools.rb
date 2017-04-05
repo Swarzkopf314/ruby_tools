@@ -22,7 +22,7 @@ module Helper
         }
       end
     RUBY
-  end if false # TODO AppHelper?
+  end
 
   # TODO - zamienic key na path = [] ?
   def self.traverse(object, key = nil)
@@ -60,6 +60,10 @@ module Helper
     prc = block_given? ? Proc.new : proc {|msg| raise msg} 
 
     return proc {|cond, msg = "assertion_failed"| prc.call(msg) unless cond}
+  end
+
+  def self.log_application_backtrace
+    Rails.logger.ap caller.grep /#{Rails.application.root}.*/
   end
 
 end
