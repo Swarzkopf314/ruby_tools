@@ -109,6 +109,10 @@ Object.class_eval do
     !!self
   end
 
+  def param_to_bool
+    self.to_s.param_to_bool
+  end
+
   def tap_in_block_if(condition)
     condition ? yield(self) : self
   end
@@ -233,6 +237,10 @@ Proc.class_eval do
 end
 
 String.class_eval do
+
+  def param_to_bool
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(self)
+  end
 
   def is_number?
     s = self.strip.sub(',', '.')
