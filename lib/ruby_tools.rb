@@ -238,8 +238,10 @@ end
 
 String.class_eval do
 
+  TRUE_VALUES_FOR_PARAMS = ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES | ['yes', 'tak']
+
   def param_to_bool
-    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(self)
+    TRUE_VALUES_FOR_PARAMS.include?(self)
   end
 
   def is_number?
