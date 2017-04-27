@@ -1,5 +1,7 @@
 require "ruby_tools/version"
 
+# TODO - zrobić tak samo, jak w ActiveSupport - zeby moc require-owac osobno poszczegole feature'y
+
 # ActiveSupport
 require "active_support"
 require "active_support/core_ext"
