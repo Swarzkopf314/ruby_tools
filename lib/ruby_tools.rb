@@ -167,6 +167,7 @@ module HashExtensions
     replace hmap(&block)
   end
 
+  # przy yield(v) można używać hash.compose(&:to_f) !!!!
   def compose
     each_with_object({}) do |(k, v), acc|
       acc[k] = yield(v, k)
